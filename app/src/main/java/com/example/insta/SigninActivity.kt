@@ -65,6 +65,7 @@ class SigninActivity : AppCompatActivity() {
         if (FirebaseAuth.getInstance().currentUser !=null)
         {
             val intent = Intent(this@SigninActivity, MainActivity::class.java)
+            //لازالة كل الواجهات السابقة
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             finish()

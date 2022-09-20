@@ -1,11 +1,13 @@
 package com.example.insta.Model
 
+
 class User {
     private var username: String = ""
     private var fullname: String = ""
     private var bio: String = ""
     private var image: String = ""
     private var uid: String = ""
+
 
     constructor()
     constructor(username: String, fullname: String, bio: String, image: String, uid: String) {
@@ -16,55 +18,43 @@ class User {
         this.uid = uid
     }
 
-    fun getUsername() : String
-    {
+    fun getUsername(): String {
         return username
     }
 
-    fun setUsername(username: String)
-    {
+    fun setUsername(username: String) {
         this.username = username
     }
 
-    fun getFullname() : String
-    {
+    fun getFullname(): String {
         return fullname
     }
 
-    fun setFullname(fullname: String)
-    {
+    fun setFullname(fullname: String) {
         this.fullname = fullname
     }
 
-    fun getBio() : String
-    {
+    fun getBio(): String {
         return bio
     }
 
-    fun setBio(bio: String)
-    {
+    fun setBio(bio: String) {
         this.bio = bio
     }
 
-    fun getImage() : String
-    {
+    fun getImage(): String {
         return image
     }
 
-    fun setImage(image: String)
-    {
+    fun setImage(image: String) {
         this.image = image
     }
 
-    fun getUid() : String
-    {
+    fun getUID(): String {
         return uid
     }
 
-    fun setUid(uid: String)
-    {
+    fun setUID(uid: String) {
         this.uid = uid
     }
-
-
 }

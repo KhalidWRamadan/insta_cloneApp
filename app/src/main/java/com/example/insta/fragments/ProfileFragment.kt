@@ -126,13 +126,13 @@ class ProfileFragment : Fragment() {
                 getButtonText == "Edit Profile" -> startActivity(Intent(context, AccountSettingsActivity::class.java))
                 getButtonText == "Follow" -> {
                     firebaseUser?.uid.let {
-                        FirebaseDatabase.getInstance().reference
+                        FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference
                             .child("Follow")
                             .child(it.toString()).child("Following").child(profileId)
                             .setValue(true)
                     }
                     firebaseUser?.uid.let {
-                        FirebaseDatabase.getInstance().reference
+                        FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference
                             .child("Follow")
                             .child(profileId).child("Followers").child(it.toString())
                             .setValue(true)
@@ -143,13 +143,13 @@ class ProfileFragment : Fragment() {
 
                 getButtonText == "Following" -> {
                     firebaseUser?.uid.let {
-                        FirebaseDatabase.getInstance().reference
+                        FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference
                             .child("Follow")
                             .child(it.toString()).child("Following").child(profileId)
                             .removeValue()
                     }
                     firebaseUser?.uid.let {
-                        FirebaseDatabase.getInstance().reference
+                        FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference
                             .child("Follow")
                             .child(profileId).child("Followers").child(it.toString())
                             .removeValue()
@@ -171,7 +171,7 @@ class ProfileFragment : Fragment() {
 
     private fun mySaves() {
         mySavesImg = ArrayList()
-        val savedRef = FirebaseDatabase.getInstance().reference.child("Saves")
+        val savedRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Saves")
             .child(firebaseUser.uid)
         savedRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -192,7 +192,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun readSavedImagesData() {
-        val postsRef = FirebaseDatabase.getInstance().reference.child("Posts")
+        val postsRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Posts")
         postsRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists())
@@ -221,7 +221,7 @@ class ProfileFragment : Fragment() {
 
     private fun checkFollowAndFollowingButtonStatus() {
         val followingRef = firebaseUser?.uid.let {
-            FirebaseDatabase.getInstance().reference
+            FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference
                 .child("Follow")
                 .child(it.toString()).child("Following")
         }
@@ -267,7 +267,7 @@ class ProfileFragment : Fragment() {
     }
     private fun getFollowers()
     {
-        val followersRef = FirebaseDatabase.getInstance().reference
+        val followersRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference
                 .child("Follow")
                 .child(profileId).child("Followers")
 
@@ -286,7 +286,7 @@ class ProfileFragment : Fragment() {
     }
     private fun getFollowing()
     {
-        val followersRef = FirebaseDatabase.getInstance().reference
+        val followersRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference
                 .child("Follow")
                 .child(profileId).child("Following")
 
@@ -306,7 +306,7 @@ class ProfileFragment : Fragment() {
 
     private fun myPhotos()
     {
-        val postsRef = FirebaseDatabase.getInstance().reference.child("Posts")
+        val postsRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Posts")
         postsRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists())
@@ -332,7 +332,7 @@ class ProfileFragment : Fragment() {
     }
     private fun userInfo()
     {
-        val  usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(profileId)
+        val  usersRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").getReference().child("Users").child(profileId)
         usersRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists())
@@ -377,7 +377,7 @@ class ProfileFragment : Fragment() {
 
     private fun getTotalNumberOfPosts()
     {
-        val postRef = FirebaseDatabase.getInstance().reference.child("Posts")
+        val postRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Posts")
         postRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists())
@@ -402,7 +402,7 @@ class ProfileFragment : Fragment() {
     }
     private fun addNotification()
     {
-        val notiRef = FirebaseDatabase.getInstance().reference.child("Notifications")
+        val notiRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Notifications")
             .child(profileId)
         val notiMap = HashMap<String, Any>()
         notiMap["userid"] = firebaseUser!!.uid

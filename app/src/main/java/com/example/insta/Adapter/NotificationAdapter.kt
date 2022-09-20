@@ -1,5 +1,6 @@
 package com.example.insta.Adapter
 
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -24,12 +25,70 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_comments.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
-class NotificationAdapter (
+class NotificationAdapter(
     private val mContext: Context,
-    private val mNotification: List<Notification>) : RecyclerView.Adapter<NotificationAdapter.ViewHolder>()
-{
-    inner class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView)
-    {
+    private val mNotification: List<Notification>
+) : RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(mContext).inflate(R.layout.notifications_item_layout, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return mNotification.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        val notification = mNotification[position]
+
+        if (notification.getText().equals("started following you")){
+            holder.text.text = "started following you"
+
+        }else if (notification.getText().equals("liked your post")){
+            holder.text.text = "liked your post"
+        }else if (notification.getText().contains("commented:")){
+            holder.text.text = notification.getText().replace("commented:","commented: ")
+        }else{
+            holder.text.text = notification.getText()
+        }
+
+
+        userInfo(holder.profileImage, holder.userName,notification.getUserId())
+        if (notification.isIsPost()){
+            holder.postImage.visibility = View.VISIBLE
+            getPostImage(holder.postImage,notification.getPostId())
+        }else{
+            holder.postImage.visibility = View.GONE
+        }
+
+
+        holder.itemView.setOnClickListener {
+            if (notification.isIsPost()){
+
+                val editor = mContext.getSharedPreferences("PREFS",Context.MODE_PRIVATE).edit()
+                editor.putString("postId",notification.getPostId())
+                editor.apply()
+                (mContext as FragmentActivity).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    PostDetailsFragment()
+                ).commit()
+
+            }else{
+                val editor = mContext.getSharedPreferences("PREFS",Context.MODE_PRIVATE).edit()
+                editor.putString("profileId",notification.getUserId())
+                editor.apply()
+                (mContext as FragmentActivity).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    ProfileFragment()
+                ).commit()
+
+            }
+        }
+
+    }
+
+
+    inner class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
         var postImage: ImageView
         var profileImage: CircleImageView
         var userName: TextView
@@ -37,81 +96,27 @@ class NotificationAdapter (
 
         init {
             postImage = itemView.findViewById(R.id.notification_post_image)
-            profileImage = itemView.findViewById(R.id.notification_profile_image)
+            profileImage = itemView.findViewById(R.id.pro_image_profile_frag)
             userName = itemView.findViewById(R.id.username_notification)
             text = itemView.findViewById(R.id.comment_notification)
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(mContext).inflate(R.layout.notifications_item_layout, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val notification = mNotification[position]
-        if (notification.getText().equals("Started Following you"))
-        {
-            holder.text.text = "Started Following you"
-        }
-        else if (notification.getText().equals("Liked your post"))
-        {
-            holder.text.text = "Liked your post"
-        }
-        else if (notification.getText().contains("Commented:"))
-        {
-            holder.text.text = notification.getText().replace("Commented:","Commented: ")
-        }
-        else
-        {
-            holder.text.text = notification.getText()
-        }
+    private fun userInfo(imageView: ImageView,userName:TextView,publisherId:String) {
 
 
+        val userRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Users").child(publisherId)
 
-        userInfo(holder.profileImage, holder.userName, notification.getuserId())
-        if (notification.isIsPost())
-        {
-            holder.postImage.visibility = View.VISIBLE
-            getPostImage(holder.postImage, notification.getPostId())
-        }
-        else
-        {
-            holder.postImage.visibility =  View.GONE
-        }
 
-        holder.itemView.setOnClickListener {
-            if (notification.isIsPost())
-            {
-                val editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
-                editor.putString("postId", notification.getPostId())
-                editor.apply()
-                (mContext as FragmentActivity).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, PostDetailsFragment()).commit()
-            }
-            else
-            {
-                val editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit()
-                editor.putString("profileId", notification.getPostId())
-                editor.apply()
-                (mContext as FragmentActivity).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, ProfileFragment()).commit()
-            }
-        }
-    }
+        userRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
 
-    override fun getItemCount(): Int {
-        return mNotification.size
-    }
-
-    private fun userInfo(imageView: ImageView, userName: TextView, publisherId: String)
-    {
-        val  usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(publisherId)
-        usersRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists())
-                {
-                    val user = snapshot.getValue<User>(User::class.java)
-                    Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(imageView)
+                if (p0.exists()) {
+                    val user = p0.getValue<User>(User::class.java)
+                    Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile)
+                        .into(imageView)
                     userName.text = user!!.getUsername()
+
+
                 }
             }
 
@@ -120,15 +125,18 @@ class NotificationAdapter (
             }
         })
     }
-    private fun getPostImage(imageView: ImageView, postID: String)
-    {
-        val  postRef = FirebaseDatabase.getInstance().reference.child("Posts").child(postID)
+
+    private fun getPostImage(imageView: ImageView, postID:String) {
+        val postRef =
+            FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Posts").child(postID)
+
         postRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists())
-                {
-                    val post = snapshot.getValue<Post>(Post::class.java)
-                    Picasso.get().load(post!!.getPostimage()).placeholder(R.drawable.profile).into(imageView)
+            override fun onDataChange(p0: DataSnapshot) {
+
+                if (p0.exists()) {
+                    val post = p0.getValue<Post>(Post::class.java)
+                    Picasso.get().load(post!!.getPostimage()).placeholder(R.drawable.profile)
+                        .into(imageView)
 
                 }
             }
@@ -138,5 +146,6 @@ class NotificationAdapter (
             }
         })
     }
+
 
 }

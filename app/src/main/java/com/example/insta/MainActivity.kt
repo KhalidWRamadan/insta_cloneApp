@@ -2,6 +2,7 @@ package com.example.insta
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -14,56 +15,59 @@ import com.example.insta.fragments.HomeFragment
 import com.example.insta.fragments.NotificationsFragment
 import com.example.insta.fragments.ProfileFragment
 import com.example.insta.fragments.SearchFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
 
-    private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.nav_home -> {
-                moveToFragment(HomeFragment())
-                return@OnNavigationItemSelectedListener true
+    private val onNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    moveToFragment(HomeFragment())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Search -> {
+                    moveToFragment(SearchFragment())
+                    return@OnNavigationItemSelectedListener true
+                }
+
+                R.id.notification -> {
+                    moveToFragment(NotificationsFragment())
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.Profile -> {
+                    moveToFragment(ProfileFragment())
+                    return@OnNavigationItemSelectedListener true
+                }
             }
-            R.id.nav_search -> {
-                moveToFragment(SearchFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_add_post -> {
-                item.isChecked = false
-                startActivity(Intent(this@MainActivity,AddPostActivity::class.java))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_notifications -> {
-                moveToFragment(NotificationsFragment())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.nav_profile -> {
-                moveToFragment(ProfileFragment())
-                return@OnNavigationItemSelectedListener true
-            }
+
+
+            false
         }
-
-
-        false
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
+        fabBtn.setOnClickListener {
+            startActivity(Intent(this@MainActivity, AddPostActivity::class.java))
+        }
+
+        val navView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         moveToFragment(HomeFragment())
-        
+
 
     }
 
-    private fun moveToFragment(fragment: Fragment)
-    {
+    private fun moveToFragment(fragment: Fragment) {
         val fragmentTrans = supportFragmentManager.beginTransaction()
-        fragmentTrans.replace(R.id.fragment_container,fragment)
+        fragmentTrans.replace(R.id.fragment_container, fragment)
         fragmentTrans.commit()
     }
+
 }

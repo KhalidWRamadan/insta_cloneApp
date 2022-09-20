@@ -82,7 +82,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun searchUser(input: String) {
-        val query = FirebaseDatabase.getInstance().getReference().child("Users").orderByChild("fullname").startAt(input).endAt(input + "\uf8ff")
+        val query = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").getReference().child("Users").orderByChild("fullname").startAt(input).endAt(input + "\uf8ff")
 
         query.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -107,7 +107,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun retrieveUsers(){
-        val usersRef = FirebaseDatabase.getInstance().getReference().child("Users")
+        val usersRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").getReference().child("Users")
         usersRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (view?.search_edit_text?.text.toString() == "") {

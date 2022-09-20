@@ -64,7 +64,7 @@ class NotificationsFragment : Fragment() {
     }
 
     private fun readNotifications() {
-        val notiRef = FirebaseDatabase.getInstance().reference.child("Notifications")
+        val notiRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Notifications")
             .child(FirebaseAuth.getInstance().currentUser!!.uid)
 
         notiRef.addValueEventListener(object : ValueEventListener{

@@ -7,6 +7,7 @@ class Notification {
     private var ispost = false
 
     constructor()
+
     constructor(userid: String, text: String, postid: String, ispost: Boolean) {
         this.userid = userid
         this.text = text
@@ -14,39 +15,35 @@ class Notification {
         this.ispost = ispost
     }
 
-    fun getuserId(): String{
+    fun getUserId(): String {
         return userid
     }
 
-    fun getText(): String{
+    fun getText(): String {
         return text
     }
 
-    fun getPostId(): String{
+    fun getPostId(): String {
         return postid
     }
 
-    fun isIsPost(): Boolean{
+    fun isIsPost(): Boolean {
         return ispost
     }
 
-    fun setUserId(userid: String)
-    {
+    fun setUserId(userid: String) {
         this.userid = userid
     }
 
-    fun setText(text: String)
-    {
+    fun setText(text: String) {
         this.text = text
     }
 
-    fun setPostId(postid: String)
-    {
+    fun setPostId(postid: String) {
         this.postid = postid
     }
 
-    fun setIsPost(ispost: Boolean)
-    {
+    fun setIsPost(ispost: Boolean) {
         this.ispost = ispost
     }
 

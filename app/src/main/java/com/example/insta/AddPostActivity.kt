@@ -17,7 +17,6 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
 import com.theartofdev.edmodo.cropper.CropImage
-import kotlinx.android.synthetic.main.activity_account_settings.*
 import kotlinx.android.synthetic.main.activity_add_post.*
 
 class AddPostActivity : AppCompatActivity() {
@@ -28,11 +27,12 @@ class AddPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_post)
         storagePostPicRef = FirebaseStorage.getInstance().reference.child("Posts Pictures")
-        save_new_post_btn.setOnClickListener { uploadImage() }
+        save_btn_post.setOnClickListener { uploadImage() }
 
         CropImage.activity()
             .setAspectRatio(2,1)
             .start(this@AddPostActivity)
+
     }
 
 
@@ -43,7 +43,8 @@ class AddPostActivity : AppCompatActivity() {
         {
             val result = CropImage.getActivityResult(data)
             imageUri = result.uri
-            image_post.setImageURI(imageUri)
+            imagePost.setImageURI(imageUri)
+
         }
     }
 
@@ -52,7 +53,7 @@ class AddPostActivity : AppCompatActivity() {
             imageUri == null -> {
                 Toast.makeText(this,"Please select image", Toast.LENGTH_LONG).show()
             }
-            description_post.text.toString() == "" -> {
+            postDescription.text.toString() == "" -> {
                 Toast.makeText(this, "Write Description", Toast.LENGTH_LONG).show()
             }
             else -> {
@@ -77,11 +78,11 @@ class AddPostActivity : AppCompatActivity() {
                     {
                         val downloadUrl = task.result
                         myUrl = downloadUrl.toString()
-                        val ref = FirebaseDatabase.getInstance().reference.child("Posts")
+                        val ref = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Posts")
                         val postId = ref.push().key
                         val postMap = HashMap<String, Any>()
                         postMap["postid"] = postId!!
-                        postMap["description"] = description_post.text.toString()
+                        postMap["description"] = postDescription.text.toString()
                         postMap["publisher"] = FirebaseAuth.getInstance().currentUser!!.uid
                         postMap["postimage"] = myUrl
                         ref.child(postId).updateChildren(postMap)

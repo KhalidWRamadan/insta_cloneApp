@@ -18,31 +18,31 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.comments_layout.view.*
 
-class CommentAdapter(private val mContext: Context, private val mComment: MutableList<Comment>?)
-    : RecyclerView.Adapter<CommentAdapter.ViewHolder>()
-{
-    private  var firebaseUser: FirebaseUser? = null
+class CommentAdapter(private val mCoontext: Context, private val mComment: MutableList<Comment>?) :
+    RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
+
+    private var firebaseUser: FirebaseUser? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentAdapter.ViewHolder {
-        val view = LayoutInflater.from(mContext).inflate(R.layout.comments_layout, parent, false)
+        val view = LayoutInflater.from(mCoontext).inflate(R.layout.comments_layout, parent, false)
         return ViewHolder(view)
     }
-
-    override fun onBindViewHolder(holder: CommentAdapter.ViewHolder, position: Int) {
-        firebaseUser = FirebaseAuth.getInstance().currentUser
-        val comment = mComment!![position]
-        holder.commentTV.text = comment.getComment()
-        getUserInfo(holder.imageProfile, holder.userNameTV, comment.getPublisher())
-    }
-
 
     override fun getItemCount(): Int {
         return mComment!!.size
     }
 
-    inner class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView)
-    {
+    override fun onBindViewHolder(holder: CommentAdapter.ViewHolder, position: Int) {
+
+        firebaseUser = FirebaseAuth.getInstance().currentUser
+        var comment = mComment!![position]
+        holder.commentTV.text = comment.getComment()
+        getUserInfo(holder.imageProfile, holder.userNameTV, comment.getPublisher())
+    }
+
+
+    inner class ViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imageProfile: CircleImageView
         var userNameTV: TextView
         var commentTV: TextView
@@ -54,21 +54,30 @@ class CommentAdapter(private val mContext: Context, private val mComment: Mutabl
         }
     }
 
-    private fun getUserInfo(imageProfile: CircleImageView, userNameTV: TextView, publisher: String) {
-        val userREF = FirebaseDatabase.getInstance().reference.child("Users").child(publisher)
-        userREF.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists())
-                {
-                    val user = snapshot.getValue<User>(User::class.java)
-                    Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile).into(imageProfile)
-                    userNameTV.text = user!!.getUsername()
-                }
+    private fun getUserInfo(
+        imageProfile: CircleImageView,
+        userNameTV: TextView,
+        publisher: String
+    ) {
+
+        val userRef =
+            FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Users").child(publisher)
+        userRef.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+
             }
 
-            override fun onCancelled(error: DatabaseError) {
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    val user = p0.getValue(User::class.java)
+//                    Picasso.get().load(user!!.getImage()).placeholder(R.drawable.profile)
+//                        .into(imageProfile)
+                    userNameTV.text = user!!.getUsername()
+
+                }
             }
         })
+
     }
 
 }

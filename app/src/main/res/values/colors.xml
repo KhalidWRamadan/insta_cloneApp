@@ -5,4 +5,17 @@
     <color name="colorAccent">#ff68a5</color>
     <color name="colorBlack">#c2bdbf</color>
     <color name="colorBlue">#5552FF</color>
+    <color name="purple_200">#A1E3D8</color>
+    <color name="red">#FF5252</color>
+    <color name="purple_700">#383345</color>
+    <color name="teal_200">#069A8E</color>
+    <color name="teal_700">#005555</color>
+    <color name="yellow">#F7FF93</color>
+    <color name="statusBlack">#100F0F</color>
+    <color name="colorMain">#0F3D3E</color>
+    <color name="colorSecond">#E2DCC8</color>
+    <color name="fontColor">#F1F1F1</color>
+    <color name="onlineColor">#00C853</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
 </resources>

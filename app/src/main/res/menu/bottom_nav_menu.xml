@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/home"
-        android:title="" />
+    <item android:title="@string/title_home"
+        android:id="@+id/home"
+        android:contentDescription="@string/title_home"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_outline_home_24"/>
 
-    <item
-        android:id="@+id/nav_search"
-        android:icon="@drawable/search"
-        android:title="" />
+    <item android:title="@string/title_notifications"
+        android:id="@+id/notification"
+        app:showAsAction="ifRoom"
+        android:contentDescription="@string/title_notifications"
+        android:icon="@drawable/ic_baseline_favorite_border_24"/>
 
-    <item
-        android:id="@+id/nav_add_post"
-        android:icon="@drawable/add"
-        android:title="" />
+    <item android:title=""
+        android:id="@+id/test"
+        android:enabled="false"
+        app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/nav_notifications"
-        android:icon="@drawable/heart"
-        android:title="" />
+    <item android:title="@string/search"
+        app:showAsAction="ifRoom"
+        android:contentDescription="@string/search"
+        android:id="@+id/Search"
+        android:icon="@drawable/ic_baseline_search_24"/>
 
-    <item
-        android:id="@+id/nav_profile"
-        android:icon="@drawable/profile_icon"
-        android:title="" />
+    <item android:title="@string/profile"
+        android:id="@+id/Profile"
+        app:showAsAction="ifRoom"
+        android:contentDescription="@string/profile"
+        android:icon="@drawable/ic_outline_person_24"/>
 
 </menu>

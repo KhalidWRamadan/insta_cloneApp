@@ -62,7 +62,9 @@ class SignupActivity : AppCompatActivity() {
 
     private fun saveUserInfo(fullName: String, userName: String, email: String,progressDialog: ProgressDialog) {
         val currentUserID = FirebaseAuth.getInstance().currentUser!!.uid
-        val usersRef: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
+        val usersRef: DatabaseReference = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Users")
+
+        //انشاء مصفوفة لبيانات المستخدم
         val userMap = HashMap<String,Any>()
         userMap["uid"] = currentUserID
         userMap["fullname"] = fullName
@@ -70,6 +72,7 @@ class SignupActivity : AppCompatActivity() {
         userMap["email"] = email
         userMap["bio"] = "Insta"
         userMap["image"] = "gs://instagram-clone-app-6fdef.appspot.com/Default images/profile.png"
+        //اضافة البيانات الي في المصفوفة على قاعدة البيانات
         usersRef.child(currentUserID).setValue(userMap)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful)
@@ -77,7 +80,8 @@ class SignupActivity : AppCompatActivity() {
                     progressDialog.dismiss()
                     Toast.makeText(this,"Account has been created successfully",Toast.LENGTH_LONG).show()
 
-                    FirebaseDatabase.getInstance().reference.child("Follow").child(currentUserID)
+                    //عند انشاء الحساب تعمل فولو لنفسك عشان تشوف منشورات حالك
+                    FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Follow").child(currentUserID)
                         .child("Following").child(currentUserID).setValue(true)
 
                     val intent = Intent(this@SignupActivity,MainActivity::class.java)

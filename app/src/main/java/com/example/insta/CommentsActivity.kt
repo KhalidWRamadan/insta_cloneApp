@@ -30,8 +30,8 @@ class CommentsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_comments)
 
         val intent = intent
-        postId = intent.getStringExtra("postId")
-        publisherId = intent.getStringExtra("publisherId")
+        postId = intent.getStringExtra("postId").toString()
+        publisherId = intent.getStringExtra("publisherId").toString()
 
         firebaseUser = FirebaseAuth.getInstance().currentUser
 
@@ -62,7 +62,7 @@ class CommentsActivity : AppCompatActivity() {
     }
 
     private fun addComment() {
-        val  commentsRef = FirebaseDatabase.getInstance().reference.child("Comments")
+        val  commentsRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Comments")
             .child(postId!!)
 
         val commentsMap = HashMap<String, Any>()
@@ -75,7 +75,7 @@ class CommentsActivity : AppCompatActivity() {
 
     private fun userInfo()
     {
-        val  usersRef = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
+        val  usersRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Users").child(firebaseUser!!.uid)
         usersRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists())
@@ -94,7 +94,7 @@ class CommentsActivity : AppCompatActivity() {
 
     private fun getPostImage()
     {
-        val  postRef = FirebaseDatabase.getInstance().reference.child("Posts").child(postId!!).child("postimage")
+        val  postRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Posts").child(postId!!).child("postimage")
         postRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists())
@@ -112,7 +112,7 @@ class CommentsActivity : AppCompatActivity() {
     }
     private fun readComments()
     {
-        val commentsRef = FirebaseDatabase.getInstance().reference.child("Comments")
+        val commentsRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Comments")
             .child(postId)
 
         commentsRef.addValueEventListener(object : ValueEventListener{
@@ -136,7 +136,7 @@ class CommentsActivity : AppCompatActivity() {
     }
     private fun addNotification()
     {
-        val notiRef = FirebaseDatabase.getInstance().reference.child("Notifications")
+        val notiRef = FirebaseDatabase.getInstance("https://salah-59d6e-default-rtdb.firebaseio.com/").reference.child("Notifications")
             .child(publisherId!!)
         val notiMap = HashMap<String, Any>()
         notiMap["userid"] = firebaseUser!!.uid

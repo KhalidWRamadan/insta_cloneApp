@@ -12,10 +12,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CommentsActivity"></activity>
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddStoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Adapter.StoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Adapter.ShowUsersActivity"
+            android:exported="false" />
+        <activity android:name=".CommentsActivity" />
         <activity android:name=".AddPostActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".SigninActivity">
+        <activity
+            android:name=".SigninActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

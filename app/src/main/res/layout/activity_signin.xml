@@ -49,13 +49,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/password_login"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="6dp"
+        android:layout_marginRight="20dp"
         android:background="@android:color/white"
         android:text="Login"
         android:textAllCaps="false"
-        android:textSize="17dp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:textSize="17dp" />
 
     <Button
         android:id="@+id/signup_link_btn"
